@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 # наша задача по выводу текста на экран
 def my_job():
     for category in Category.objects.all():
-        new_posts = Post.objects.filter(categories=name)
+        new_posts = Post.objects.filter(categories=postCategory)
         posts_last_week = new_posts.filter(time_in__gte=date.today() - timedelta(days=7))
         post_list = ''
         for post in posts_last_week:

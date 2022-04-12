@@ -1,0 +1,55 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %} <!-- не забываем заранее загружать наши фильтры! -->
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+<form method="GET">
+    {{ filter.form }} <!-- Форму от фильтров за нас сделает django. А вот кнопку, увы придётся делать самому -->
+    <input type="submit" value="Найти">
+</form>
+    <h1>Все новости</h1>
+    <h3>{{ time_now }}</h3>
+    <hr>
+
+        <table>
+            <tr>
+                 <td>
+                    Номер
+                </td>
+                <td>
+                    Заголовок
+                </td>
+                <td>
+                    Текст
+                </td>
+                <td>
+                    Дата публикации
+                </td>
+            </tr>
+        {%  for post in filter.qs %}
+            <tr>
+                <td>
+                    {{ post.id}} <!-- попробуем умножить название товара на строку а -->
+                </td>
+                <td>
+                    {{ post.title|Censor}} <!-- попробуем умножить название товара на строку а -->
+                </td>
+                <td>
+
+                    {% filter Censor %}
+                    {{ post.text|truncatechars:25}}
+                    {% endfilter %}
+
+                </td>
+                <td>
+                    {{ post.dateCreation}}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+
+{% endblock content %}

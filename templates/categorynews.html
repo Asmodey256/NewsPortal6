@@ -1,0 +1,43 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Category
+{% endblock title %}
+
+{% block content %}
+    <h1>Категории</h1>
+<hr>
+
+        <table>
+            <tr>
+                <td>
+                    Кетегория
+                </td>
+                <td>
+                    Подпиcчики
+                </td>
+                 <td>
+                    Действие
+                </td>
+            </tr>
+        {%  for category in categorynews %}
+            <tr>
+                <td>
+                    {{category.name}} <!-- попробуем умножить название товара на строку а -->
+                </td>
+                <td>
+                    {% for user in name.subscribers.all %}
+                    {{ user.username}},
+                    {% endfor %}
+                </td>
+                <td>
+            <a href="{% url 'add_subscribe' category.id %}"><u> Подписаться</u></a>
+
+            <a href="{% url 'del_subscribe' category.id %}"><u> Отписаться </u></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+
+
+{% endblock content %}

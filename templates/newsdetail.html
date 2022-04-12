@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+
+{% block title %}
+News
+{% endblock title %}
+
+
+{% block content %}
+<h1> Заголовок: {{ newsdetail.title|Censor }}</h1>
+<h1>Дата публикации: {{ newsdetail.dateCreation|date:"d-M-Y"}}</h1>
+<h1>Категории: {% for name in newsdetail.postCategory.all %}
+                {{ name.name}}
+</h1>
+{% endfor %}
+<h1>Содержание: {% filter Censor %} {{ newsdetail.text|truncatechars:50}} {% endfilter %}</h1>
+{% endblock content %}

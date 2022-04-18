@@ -16,5 +16,6 @@ urlpatterns = [
     path('upgrade/', upgrade_me, name='upgrade'),
     path('<int:pk>/add_subscribe/', add_subscribe, name='add_subscribe'),
     path('<int:pk>/del_subscribe/', del_subscribe, name='del_subscribe'),
-    path('categorynews/', CategoryList.as_view())
+    path('categorynews/', CategoryList.as_view()),
+    path('celery', IndexView.as_view())
 ]

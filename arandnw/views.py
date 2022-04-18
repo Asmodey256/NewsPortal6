@@ -2,7 +2,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.views.generic.edit import CreateView
 from .models import Post, Category, Author
 from .models import BaseRegisterForm
-from datetime import datetime
+from datetime import datetime, timedelta, date
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from .filters import PostFilter
@@ -14,15 +14,10 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.db.models.signals import post_save,m2m_changed
-
-class CategoryList(ListView):
-    model = Category
-    template_name = 'categorynews.html'
-    context_object_name = 'categorynews'
-    queryset = Category.objects.order_by('-id')
-    paginate_by = 10
-    form_class = CategoryForm
+from django.views import View
+from .tasks import *
 
 class NewsList(ListView):
     model = Post
@@ -162,3 +157,10 @@ class CategoryList(ListView):
     queryset = Category.objects.order_by('-id')
     paginate_by = 10
     form_class = CategoryForm
+
+
+class IndexView(View):
+    def get(self, request):
+        printer.delay(10)
+        hello.delay()
+        return HttpResponse('Hello!')

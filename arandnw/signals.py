@@ -1,14 +1,11 @@
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver # импортируем нужный декоратор
 from django.core.mail import mail_managers
-from .models import Post, PostCategory, Category
+from .models import *
 from django.core.mail import send_mail
 from django.shortcuts import redirect
 from django.core.mail import mail_admins
 
-# В декоратор передаётся первым аргументом сигнал, на который будет реагировать эта функция, и в отправителе - модель
-# Создаем функцию обработчик с параметрами под регистрацию сигнала
-# Арг: sender - модель, instance - фактически сохраняемый экз, created - бул, истинно, если была создана новая запись
 
 @receiver(m2m_changed, sender=Post.postCategory.through)
 def notify_subscribers_newnews(sender, instance,  **kwargs):
@@ -20,10 +17,10 @@ def notify_subscribers_newnews(sender, instance,  **kwargs):
         n = 0
         for user in category.subscribers.all():
             if n == 0:
-                recipient_list = recipient_list  + user.email  # Надо убрать запятую если адресат 1
-                n +=1
+                recipient_list = recipient_list + user.email  # Надо убрать запятую если адресат 1
+                n += 1
             else:
-                recipient_list = recipient_list +' ,'+ user.email
+                recipient_list = recipient_list +', '+ user.email
         subject = f' На сайте NewsPortal в категории {category.name} появилась новая статья - {instance.title}'
         print('subject: '+subject)
         print('message_body: ' + message_body)
@@ -33,4 +30,4 @@ def notify_subscribers_newnews(sender, instance,  **kwargs):
             message=message_body,
             from_email = 'Asmodey256@yandex.ru',
             recipient_list = [recipient_list],
-            )
+        )

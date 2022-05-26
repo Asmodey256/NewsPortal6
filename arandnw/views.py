@@ -18,6 +18,9 @@ from django.http import HttpResponse
 from django.db.models.signals import post_save,m2m_changed
 from django.views import View
 from .tasks import *
+import logging
+
+logger = logging.getLogger(__name__)
 
 class NewsList(ListView):
     model = Post
